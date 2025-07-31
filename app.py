@@ -10,15 +10,20 @@ def fetch_sensor_data(sensor_index, read_key):
     headers = {"X-API-Key": read_key}
     try:
         response = requests.get(url, headers=headers, timeout=10)
+        print(f"Sensor {sensor_index} response status: {response.status_code}")  # Debug print
         if response.status_code == 200:
             data = response.json()["sensor"]
             last_seen = datetime.datetime.utcfromtimestamp(data["last_seen"])
             pm25 = data.get("pm2.5", "N/A")
             temp = data.get("temperature", "N/A")
             online = (datetime.datetime.utcnow() - last_seen).total_seconds() < 3600
+
+            # Debug print to check values
+            print(f"Sensor {sensor_index} last seen at {last_seen}, online: {online}")
+
             return {"pm25": pm25, "temp": temp, "online": online, "last_seen": last_seen}
-    except:
-        pass
+    except Exception as e:
+        print(f"Error fetching sensor {sensor_index}: {e}")  # Catch and print any errors
     return {"pm25": "N/A", "temp": "N/A", "online": False, "last_seen": "N/A"}
 
 @app.route("/")
