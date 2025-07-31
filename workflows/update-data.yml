@@ -1,0 +1,33 @@
+name: Update Sensor Data
+
+on:
+  schedule:
+    - cron: '0 3 * * *'  # Runs daily at 3:00 AM UTC
+  workflow_dispatch:     # Allows manual runs
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install pandas requests
+
+      - name: Run update_data.py
+        env:
+          PURPLEAIR_API_KEY: 462A9FCB-1F5B-11EE-A77F-42010A800009
+        run: python update_data.py
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add cached_data.json
+          git commit -m "Update sensor data"
+          git push
