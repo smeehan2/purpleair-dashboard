@@ -15,7 +15,7 @@ def fetch_sensor_data(sensor_index, read_key):
             last_seen = datetime.datetime.utcfromtimestamp(data["last_seen"])
             pm25 = data.get("pm2.5", "N/A")
             temp = data.get("temperature", "N/A")
-            online = (datetime.datetime.utcnow() - last_seen).total_seconds() < 1800
+            online = (datetime.datetime.utcnow() - last_seen).total_seconds() < 3600
             return {"pm25": pm25, "temp": temp, "online": online, "last_seen": last_seen}
     except:
         pass
