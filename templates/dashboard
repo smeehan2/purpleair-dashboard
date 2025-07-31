@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PurpleAir Sensor Dashboard</title>
+    <style>
+        table { border-collapse: collapse; width: 100%; }
+        th, td { padding: 8px; border: 1px solid #ccc; text-align: left; }
+        .online { background-color: #c8e6c9; }
+        .offline { background-color: #ffcdd2; }
+    </style>
+</head>
+<body>
+    <h1>PurpleAir Sensor Dashboard</h1>
+    <table>
+        <tr>
+            <th>Name</th><th>Index</th><th>PM2.5</th><th>Temperature</th><th>Status</th><th>Last Seen</th>
+        </tr>
+        {% for sensor in sensors %}
+        <tr class="{{ 'online' if sensor.online else 'offline' }}">
+            <td>{{ sensor.name }}</td>
+            <td>{{ sensor.index }}</td>
+            <td>{{ sensor.pm25 }}</td>
+            <td>{{ sensor.temp }}</td>
+            <td>{{ 'Online' if sensor.online else 'Offline' }}</td>
+            <td>{{ sensor.last_seen }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+      
